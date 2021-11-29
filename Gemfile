@@ -7,9 +7,8 @@ gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 5.0'
 gem 'dotenv'
-
-
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'pg'
 
 
 group :development, :test do
