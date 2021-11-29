@@ -9,6 +9,7 @@ gem 'puma', '~> 5.0'
 gem 'rspec-rails'
 gem 'simplecov'
 gem 'simplecov-console'
+gem 'dotenv'
 
 gem 'bootsnap', '>= 1.4.4', require: false
 
