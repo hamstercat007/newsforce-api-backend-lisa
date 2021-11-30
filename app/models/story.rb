@@ -2,7 +2,7 @@ class Story < ApplicationRecord
   acts_as_taggable_on :tags
 
   def self.populate_from_api
-		Story.get_articles(['al-jazeera-english']).each do |article|
+		Story.get_articles(['al-jazeera-english','associated-press','bbc-news']).each do |article|
 			Story.find_or_create_by({
 				publisher: article.name,
 				publish_date: article.publishedAt,
@@ -11,7 +11,7 @@ class Story < ApplicationRecord
 				headline: article.title,
 				sub_headline: article.description,
 				article_body: article.content
-			}) #,'associated-press','tech-crunch'
+			})
     end
   end
 
