@@ -4,8 +4,9 @@ class Story < ApplicationRecord
   def self.populate_from_Api
     newsapi = News.new(ENV['NEWSAPIKEY'])
     # /v2/everything
-    all_articles = newsapi.get_everything(sources: 'bbc-news,associated-press,al-jazeera-english',
-                                          language: 'en')
+    all_articles = newsapi.get_everything(sources: 'bbc-news,associated-press,al-jazeera-english,tech-crunch,the-wall-street-journal',
+                                          language: 'en',
+                                          pageSize: 100)
     all_articles.each do |article|
       Story.find_or_create_by({
                                 publisher: article.name,
