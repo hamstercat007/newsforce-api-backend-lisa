@@ -1,5 +1,7 @@
 class StoriesController < ApplicationController
   def index
-    Story.all.json
+    @story = Story.first
+
+    render json: @story
   end
 end
