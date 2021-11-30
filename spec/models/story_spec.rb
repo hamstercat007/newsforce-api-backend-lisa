@@ -28,4 +28,3 @@ RSpec.describe Story, type: :model do
   end
 end
 
-
