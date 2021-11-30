@@ -1,10 +1,10 @@
 class Story < ApplicationRecord
   acts_as_taggable_on :tags
 
-  def self.populate_from_Api
+  def self.populate_from_api
     newsapi = News.new(ENV['NEWSAPIKEY'])
     # /v2/everything
-    all_articles = newsapi.get_everything(sources: 'bbc-news,associated-press,al-jazeera-english,tech-crunch,the-wall-street-journal',
+    all_articles = newsapi.get_everything(sources: 'associated-press,al-jazeera-english,tech-crunch',
                                           language: 'en',
                                           pageSize: 100)
     all_articles.each do |article|
