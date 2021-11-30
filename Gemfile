@@ -28,3 +28,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "news-api", "~> 0.2.0"
+
+gem "jbuilder", "~> 2.11"
