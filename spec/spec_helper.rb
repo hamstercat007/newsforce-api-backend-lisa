@@ -6,6 +6,10 @@
 #
 require 'simplecov'
 require 'simplecov-console'
+#require 'webmock/rspec'
+require 'dotenv'
+Dotenv.load('.env')
+
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::Console
 ])
@@ -32,6 +36,14 @@ RSpec.configure do |config|
     # ...rather than:
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
+
+    # config.before(:each) do
+    #   employees_response = {
+    #   :status => 'success',
+    #   :data => []
+    # }
+    # stub_request(:get, "https://content.guardianapis.com/search?page-size=30&api-key=#{ENV['GUARDIAN_API_KEY']}&format=json&show-fields=body,headline,thumbnail"
+    # to_return(status: 200, body: employees_response.to_json)
   end
 
   # rspec-mocks config goes here. You can use an alternate test double
