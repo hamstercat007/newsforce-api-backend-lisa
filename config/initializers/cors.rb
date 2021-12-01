@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'https://newsforce-api.herokuapp.com'
+    origins '*'
 
     resource '/index',
       headers: :any,
