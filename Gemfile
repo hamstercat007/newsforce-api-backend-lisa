@@ -9,6 +9,7 @@ gem 'dotenv'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'pg'
 gem 'acts-as-taggable-on'
+gem 'whenever'
 gem 'rest-client'
 gem 'rack-cors'
 gem "news-api", "~> 0.2.0"
