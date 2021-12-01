@@ -11,6 +11,7 @@ gem 'pg'
 gem 'acts-as-taggable-on'
 gem 'rest-client'
 gem 'rack-cors'
+gem "news-api", "~> 0.2.0"
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
