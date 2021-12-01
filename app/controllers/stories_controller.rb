@@ -1,6 +1,6 @@
 class StoriesController < ApplicationController
   def index
-    @stories = Story.all
+    @stories = Story.all.order(publish_date: :desc)
     render json: @stories
   end
 end
