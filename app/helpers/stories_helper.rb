@@ -1,7 +1,6 @@
 module StoriesHelper
 
-
-  BBC_NEWS = ['us-canada', 'latin-america', 'middle-east', 'africa', 'entertainment-arts', 'sport', 'technology', 'europe']
+BBC_NEWS = ['us-canada', 'latin-america', 'middle-east', 'africa', 'entertainment-arts', 'sport', 'technology', 'europe']
 
 AFRICA =  ['Algeria','Angola','Benin','Botswana','Burkina Faso','Burundi','Cabo Verde','Cameroon','Central African Republic','Chad','Comoros','Democratic Republic of the Congo','Republic of the Congo','Cote d\'Ivoire','Djibouti','Egypt','Equatorial Guinea','Eritrea','Ethiopia','Gabon','Gambia','Ghana','Guinea','Guinea Bissau','Kenya','Lesotho','Liberia','Libya','Madagascar','Malawi','Mali','Mauritania','Mauritius','Morocco','Mozambique','Namibia','Niger','Nigeria','Rwanda','Sao Tome and Principe','Senegal','Seychelles','Sierra Leone','Somalia','South Africa','South Sudan','Sudan','Swaziland','Tanzania','Togo','Tunisia','Uganda','Zambia','Zimbabwe']
 
@@ -17,45 +16,58 @@ N_AMERICA = ['Antigua and Barbuda','Bahamas','Barbados','Belize','Canada','Costa
   MIDDLE_EAST = ['Bahrain', 'Iran','Iraq','Israel', 'Jordan','Kuwait','Lebanon', 'Oman' ,'Palestine','Qatar','Saudi Arabia','Syria','United Arab Emirates','Yemen']
 
   def self.add_to_tag_list(item)
-    tag_list = []
+    @tag_list = []
     if item['publisher'] == 'BBC News'
-      BBC_NEWS.each do |tag|
-        tag_list << tag if item.source_url.include? tag
-        tag_list << 'bbc_news'
-      end
+      self.bbc_tags(item)
     end
-
     if item['publisher'] == 'Associated Press'
-      str = item['article_body']
-      new_str = str.slice(0..(str.index(' (AP)')))
-      final_str = new_str.slice(0..(str.index(','))).tr(',', ' ').gsub(/,/,"")
-      tag_list << final_str.downcase.split(/ |\_/).map(&:capitalize).join(" ")
-      tag_list << 'associated_press'
+      self.ap_tags(item)
     end
     if item['publisher'] == 'Al Jazeera English'
-      info = item['headline'] << item['sub_headline'] << item['article_body']
-      tag_list << 'al_jazeera'
+      @tag_list << 'al-jazeera'
+    end
+    self.continental_scan(item)
+      @tag_list.uniq!
+    return @tag_list
+  end
+
+  def self.bbc_tags(item)
+    BBC_NEWS.each do |tag|
+        @tag_list << tag if item['source_url'].include? tag
+        @tag_list << 'bbc-news'
+      end
+  end
+
+  def self.ap_tags(item)
+    @tag_list << 'associated-press'
+      if item['article_body'].include? '(AP)'
+        str = item['article_body']
+        new_str = str.slice(0..(str.index(' (AP)')))
+        final_str = new_str.slice(0..(str.index(','))).tr(',', ' ').gsub(/,/,"")
+        @tag_list << final_str.downcase.split(/ |\_/).map(&:capitalize).join(" ")
+      end
+  end
+
+  def self.continental_scan(item)
+    info = item['headline'] << item['sub_headline'] << item['article_body']
       EUROPE.each do |eu_nation|
-        tag_list << 'europe' if info.include? eu_nation
+        @tag_list << 'europe' if info.include? eu_nation
       end
       ASIA.each do |asia_nation|
-        tag_list << 'asia' if info.include? asia_nation
+        @tag_list << 'asia' if info.include? asia_nation
       end
       MIDDLE_EAST.each do |me_nation|
-        tag_list << 'middle-east' if info.include? me_nation
+        @tag_list << 'middle-east' if info.include? me_nation
       end
       AFRICA.each do |af_nation|
-          tag_list << 'africa' if info.include? af_nation
-        end
-        N_AMERICA.each do |na_nation|
-          tag_list << 'north-america' if info.include? na_nation
-        end
-        S_AMERICA.each do |sa_nation|
-          tag_list << 'latin-america' if info.include? sa_nation
-        end
-        tag_list.uniq!
-    end
-    return tag_list
+        @tag_list << 'africa' if info.include? af_nation
+      end
+      N_AMERICA.each do |na_nation|
+        @tag_list << 'north-america' if info.include? na_nation
+      end
+      S_AMERICA.each do |sa_nation|
+        @tag_list << 'latin-america' if info.include? sa_nation
+      end
   end
 end
 
