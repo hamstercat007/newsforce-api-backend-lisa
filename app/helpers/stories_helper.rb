@@ -18,33 +18,33 @@ N_AMERICA = ['Antigua and Barbuda','Bahamas','Barbados','Belize','Canada','Costa
 
   def self.add_to_tag_list(item)
     tag_list = []
-    if item.publisher == 'BBC News'
+    if item['publisher'] == 'BBC News'
       BBC_NEWS.each do |tag|
         tag_list << tag if item.source_url.include? tag
         tag_list << 'bbc_news'
       end
     end
 
-    if item.publisher == 'Al Jazeera English'
-        str = item.article_body
-        new_str = str.slice(0..(str.index(' (AP)')))
-        final_str = new_str.slice(0..(str.index(','))).tr(',', ' ').gsub(/,/,"")
-        tag_list << final_str.downcase.split(/ |\_/).map(&:capitalize).join(" ")
-        tag_list << 'associated_press'
+    if item['publisher'] == 'Associated Press'
+      str = item['article_body']
+      new_str = str.slice(0..(str.index(' (AP)')))
+      final_str = new_str.slice(0..(str.index(','))).tr(',', ' ').gsub(/,/,"")
+      tag_list << final_str.downcase.split(/ |\_/).map(&:capitalize).join(" ")
+      tag_list << 'associated_press'
     end
-    if item.publisher == 'Associated Press'
-        info = item.headline << item.sub_headline << item.article_body
-        tag_list << 'al_jazeera'
-        EUROPE.each do |eu_nation|
-          tag_list << 'europe' if info.include? eu_nation
-        end
-        ASIA.each do |asia_nation|
-          tag_list << 'asia' if info.include? asia_nation
-        end
-        MIDDLE_EAST.each do |me_nation|
-          tag_list << 'middle-east' if info.include? me_nation
-        end
-        AFRICA.each do |af_nation|
+    if item['publisher'] == 'Al Jazeera English'
+      info = item['headline'] << item['sub_headline'] << item['article_body']
+      tag_list << 'al_jazeera'
+      EUROPE.each do |eu_nation|
+        tag_list << 'europe' if info.include? eu_nation
+      end
+      ASIA.each do |asia_nation|
+        tag_list << 'asia' if info.include? asia_nation
+      end
+      MIDDLE_EAST.each do |me_nation|
+        tag_list << 'middle-east' if info.include? me_nation
+      end
+      AFRICA.each do |af_nation|
           tag_list << 'africa' if info.include? af_nation
         end
         N_AMERICA.each do |na_nation|
