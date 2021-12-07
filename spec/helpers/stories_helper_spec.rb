@@ -5,23 +5,18 @@ describe StoriesHelper do
   file = File.open "spec/mocks/sample_data.json"
   data = JSON.load file
 
-  it "creates a tag list " do
+  it "creates a north-america tag" do
     mock = data[0]
-    expect(StoriesHelper.add_to_tag_list(mock)).to eq(["us-canada", "bbc-news"])
+    expect(StoriesHelper.add_to_tag_list(mock)).to eq(["north-america"])
   end
 
-  it "creates a tag list " do
+  it "creates an asia tag" do
     mock = data[1]
-    expect(StoriesHelper.add_to_tag_list(mock)).to eq(["al-jazeera", "asia"])
+    expect(StoriesHelper.add_to_tag_list(mock)).to eq(["asia"])
   end
 
-  it "creates a tag list " do
-    mock = data[2]
-    expect(StoriesHelper.add_to_tag_list(mock)).to eq(["al-jazeera"])
-  end
-
-  it "creates a tag list " do
-    mock = data[7]
-    expect(StoriesHelper.add_to_tag_list(mock)).to eq(["associated-press", "Paris"])
+  it "creates a south-america tag" do
+    mock = data[5]
+    expect(StoriesHelper.add_to_tag_list(mock)).to eq(["south-america"])
   end
 end

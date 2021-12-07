@@ -1,5 +1,5 @@
 module StoriesHelper
-  BBC_NEWS = ["us-canada", "latin-america", "middle-east", "africa", "entertainment-arts", "sport", "technology", "europe"]
+  BBC_NEWS = ["us-canada", "latin-america", "middle-east", "africa", "europe"]
 
   AFRICA = ["Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Democratic Republic of the Congo", "Republic of the Congo", 'Cote d\'Ivoire', "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea Bissau", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "Sao Tome and Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Swaziland", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe"]
 
@@ -18,12 +18,6 @@ module StoriesHelper
     if item["publisher"] == "BBC News"
       self.bbc_tags(item)
     end
-    if item["publisher"] == "Associated Press"
-      self.ap_tags(item)
-    end
-    if item["publisher"] == "Al Jazeera English"
-      @tag_list << "al-jazeera"
-    end
     self.continental_scan(item)
     @tag_list.uniq!
     return @tag_list
@@ -31,18 +25,15 @@ module StoriesHelper
 
   def self.bbc_tags(item)
     BBC_NEWS.each do |tag|
-      @tag_list << tag if item["source_url"].include? tag
-      @tag_list << "bbc-news"
-    end
-  end
-
-  def self.ap_tags(item)
-    @tag_list << "associated-press"
-    if item["article_body"].include? "(AP)"
-      str = item["article_body"]
-      new_str = str.slice(0..(str.index(" (AP)")))
-      final_str = new_str.slice(0..(str.index(","))).tr(",", " ").gsub(/,/, "")
-      @tag_list << final_str.downcase.split(/ |\_/).map(&:capitalize).join(" ")
+      if item["source_url"].include? tag
+        if tag == "latin-america"
+          @tag_list << "south-america"
+        elsif tag == "us-canada"
+          @tag_list << "north-america"
+        else
+          @tag_list << tag
+        end
+      end
     end
   end
 
@@ -64,7 +55,7 @@ module StoriesHelper
       @tag_list << "north-america" if info.include? na_nation
     end
     S_AMERICA.each do |sa_nation|
-      @tag_list << "latin-america" if info.include? sa_nation
+      @tag_list << "south-america" if info.include? sa_nation
     end
   end
 end
